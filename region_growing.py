@@ -38,7 +38,7 @@ def getNeighbors(PC, point, k):
     """
     Calculates the k-Nearest Neighbours(k) for each point(point) in a point cloud(PC)
     Input: 
-        PC: Point Cloud as list of points (Point3d )
+        PC: Point Cloud as list of points (Point3d)
         point: a single reference point (Point3d)
         k: number of points in the neihborhood
     Output:
@@ -66,4 +66,37 @@ def getNeighbors(PC, point, k):
         
     return kNN_list
 
+    
+def regionGrowing(PC, N, c, cTh, aTh, nFunction):
+    """
+    About Rhino GUID in Grasshopper:
+    "After any manipulation, of the originally referenced Point from Rhino, it will 
+    loose the Guid and subsequently other Rhino informations and it`s pretty hard to 
+    find the right guid again. So i would try to keep your Guid from the beginning in 
+    your script."
+    http://www.grasshopper3d.com/forum/topics/guid-of-an-object
+    """
+    """
+    Region growing algorithm for point cloud segmentation. 
+    Implementaion of the algorithm from here:
+    http://pointclouds.org/documentation/tutorials/region_growing_segmentation.php
+    Input:
+        PC: List(Point3d). Point Cloud as list of points.
+        N: List(Vector3d). Normal vectors as list of vectors.
+        c: List(Float). Curvature estimates for each point.
+        cTh: Float. Curvature threshold.
+        aTh: Float. Angle threshold.
+        nFunction: Function. Neihborhood finding function (kNN or FDN).
+    Output:
+        R_list: List(?Point3d?). Region list.    
+    """
+    R_list = [] # Region list
+    A = PC[:] # Available point list
+    
+    while A:
+        Rc = []
+        Sc = []
+        Pmin = 
 
+TODOs:
+1. adjust normal calculations so that witch each normal, also the respective point (Point3d) is stored in the list

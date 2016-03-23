@@ -82,29 +82,32 @@ for m in range(len(FDN_list)):
    # cast normal coordinates into floats
    normal = [float(i) for i in normal]
    # create a Vector3d from each normal
-   normals.append(RG.Vector3d(normal[0],normal[1],normal[2])) 
-   
-N = normals
+   # include the respective point for segmentation calculations
+   x = FDN_list[m][0][0]
+   y = FDN_list[m][0][1]
+   z = FDN_list[m][0][2]
+   normals.append([RG.Point3d(x,y,z),RG.Vector3d(normal[0],normal[1],normal[2])]) 
+#N = normals
 
 #=======================
 # Check if the direction of the normals are in align with the point of origin of the LIDAR laser beam
 normals_copy = normals[:]
 for i in range(len(normals_copy)):
-    v = normals_copy[i]
+    v = normals_copy[i][1]
     # unitize normals
     v.Unitize()
     # compute dot product of Z unit vector and normal
     dp = RG.Vector3d.Multiply(Z,v) 
     if dp < 0.0:
         # if dot product negative, reverse vector
-        normals[i].Reverse() 
+        normals[i][1].Reverse() 
 
 #=======================
 # Estimation of surface curvature
 #=======================
 curvature = []
 for n in normals:
-    c = n[0]/(n[0]+n[1]+n[2])
-    curvature.append(c)
-    
+    v = n[1]
+    c = v[0]/(v[0]+v[1]+v[2])
+    curvature.append([n[0],c],c)
 Cur = curvature
