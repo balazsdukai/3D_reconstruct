@@ -1,5 +1,6 @@
-
 import Rhino.Geometry as RG
+from collections import deque
+
 # PC - point cloud
 # cTh - curvature threshold
 # aTh - angle threshold
@@ -35,31 +36,26 @@ Output:
     R_list: List(?Point3d?). Region list.    
 """
 R_list = [] # Region list
-
-   
+    
 while len(PC_dict) > 0:
     Rc = []
-    Sc = [] 
+    Sc = []
     Pmin = min(PC_dict, key=PC_dict.get)
-    #Rc.append((*PC_dict[Pmin][0:2]))
-    #Sc.append((*PC_dict[Pmin][0:2]))
     Rc.append(Pmin)
-    Sc.append(Pmin)
+    Sc = deque(Pmin) # create a queue (FIFO structure)
     while len(Sc) > 0:
-        for i in range(len(Sc)):
-            Bc = PC_dict[Sc[i]][3]
-            for j in Bc:
-                if PC_dict.has_key(j):
-                    #print PC_dict[Sc[i]], PC_dict[j][0]
-                    v1,v2 = PC_dict[Sc[i]][2],PC_dict[j][2]
-                    # check if angle difference 1.0 indicate identical points
-                    if RG.Vector3d.Multiply(v1,v2) > aTh:
-                        Rc.append(j) # optionally also append Vector3d
-                        if PC_dict[j][1] < cTh:
-                            Sc.append(j)
-                        del PC_dict[j]
-            Sc.pop(i)
-    del PC_dict[Pmin]
+        Bc = PC_dict[Sc[0]][3]
+        for j in Bc:
+            if PC_dict.has_key(j):
+                v1,v2 = PC_dict[Sc[0]][2],PC_dict[j][2]
+                # check if angle difference 1.0 indicate identical points
+                if RG.Vector3d.Multiply(v1,v2) > aTh:
+                    Rc.append(j) # optionally also append Vector3d
+                    if PC_dict[j][1] < cTh:
+                        Sc.append(j)
+                    del PC_dict[j]
+        Sc.popleft()
+        del PC_dict[Sc[0]]
     R_list.append(Rc)
 #print len(R_list)
 #print R_list
