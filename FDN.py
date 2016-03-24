@@ -91,6 +91,8 @@ for m in range(len(FDN_list)):
 
 #=======================
 # Check if the direction of the normals are in align with the point of origin of the LIDAR laser beam
+
+
 normals_copy = normals[:]
 for i in range(len(normals_copy)):
     v = normals_copy[i][1]
@@ -109,5 +111,5 @@ curvature = []
 for n in normals:
     v = n[1]
     c = v[0]/(v[0]+v[1]+v[2])
-    curvature.append([n[0],c],c)
+    curvature.append([n[0],c])
 Cur = curvature

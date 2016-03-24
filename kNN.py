@@ -27,7 +27,7 @@ def getNeighbors(PC, point, k):
     distances = []
     for pt in range(len(PC)):
         dist = point.DistanceTo(PC[pt])
-        distances.append((PC[pt], dist))
+        distances.append((PC[pt],dist))
     # sort the distances in ascending order
     distances.sort(key=operator.itemgetter(1)) 
     neighbors = []
@@ -73,10 +73,7 @@ for m in range(len(kNN_list)):
    normal = [float(i) for i in normal]
    # create a Vector3d from each normal
    # include the respective point for segmentation calculations
-   x = kNN_list[m][0][0]
-   y = kNN_list[m][0][1]
-   z = kNN_list[m][0][2]
-   normals.append([RG.Point3d(x,y,z),RG.Vector3d(normal[0],normal[1],normal[2])]) 
+   normals.append([kNN_list[m][0],RG.Vector3d(normal[0],normal[1],normal[2])]) 
 #N = normals
 
 #=======================
@@ -99,5 +96,5 @@ curvature = []
 for n in normals:
     v = n[1]
     c = v[0]/(v[0]+v[1]+v[2])
-    curvature.append([n[0],c],c)
+    curvature.append([n[0],c])
 Cur = curvature
