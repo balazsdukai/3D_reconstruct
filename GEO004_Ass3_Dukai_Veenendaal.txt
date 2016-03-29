@@ -1,0 +1,10 @@
+Segmentation
+============
+1. algorithm
+compare vector angles to aTh
+New seed points are the ones <Cth
+
+very tedious process to find the right parameters to both the neighbourhood function and the segmentation algorithm
+cTh is set to the average curvature
+angle difference threshold is 4 degrees
+
