@@ -1,0 +1,1 @@
+﻿INSERT INTO roofsurface(segment) SELECT 2 WHERE NOT EXISTS (SELECT 1 FROM roofsurface WHERE segment=2);
